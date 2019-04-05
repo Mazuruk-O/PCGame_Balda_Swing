@@ -16,45 +16,41 @@ public class MainFrame extends JFrame {
         // заголовок
         super("Balda");
 
-        // встановлення іконки
-        this.setIconImg();
-
-        // встановлення фону
-        this.setBackgroundFrame();
-
-        //отриання поточного розміру екрану
-        toolkit = Toolkit.getDefaultToolkit();
-        dimension = toolkit.getScreenSize();
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // встановлення розміру вікна і його стартова позиція
+        // встановлення іконки
+        this.setIconImage(Images.icon);
+/**
+        //LayeredPane для декількох шарів
+        jLayeredPane = new JLayeredPane();
+        // об*єкт для відмальовки фону
+        // додання поточному вікну - об*єкта для відмальовки декількох шарів
+        this.setLayeredPane(jLayeredPane);
+
+        // встановлення фону
+        BackGround backGround = new BackGround();
+        backGround.setBounds(0,0,500,500);
+        jLayeredPane.add(backGround, JLayeredPane.FRAME_CONTENT_LAYER);
+
+        // додання кнопок головному вікнові
+        addButton();
+*/
+        // отримання поточного розміру екрану
+        toolkit = Toolkit.getDefaultToolkit();
+        dimension = toolkit.getScreenSize();
+        // встановлення розміру вікна і його стартової позиції
         this.setBounds(dimension.width/2-250,dimension.height/2-250,500,500);
+        // заборона зміни розмірів вінка
         this.setResizable(false);
     }
 
-    private void setIconImg(){
-        this.setIconImage(Images.icon);
-    }
-
-    private void setBackgroundFrame() {
-        //створення декількох шарів
-        jLayeredPane = new JLayeredPane();
-        // об*єкт для відмальовки фону
-        //BackgroundFrame backgroundFrame = new BackgroundFrame();
-        //розміри фону
-        // backgroundFrame.setBounds(0,0,1000,1000);
-        // додання поточному вікну - об*єкта для відмальовки декількох шарів
-        this.setLayeredPane(jLayeredPane);
-        // додання фону
-        jLayeredPane.add(new BackGround(), JLayeredPane.FRAME_CONTENT_LAYER);
-
+    private void addButton() {
         JButton buttonContinueGame = new JButton("Продовжити");
         JButton buttonTopPlayer = new JButton("Топ гравців");
         JButton buttonSettingGame = new JButton("Налаштування");
         JButton buttonExitGame = new JButton("Вихід");
         JButton buttonNewGame = new JButton("Нова гра");
-        buttonNewGame.addMouseListener(new MouseAdapter() {
+        /** buttonNewGame.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
@@ -66,7 +62,7 @@ public class MainFrame extends JFrame {
                     buttonExitGame.setVisible(false);
                 });
             }
-        });
+        }); **/
         buttonNewGame.setBounds(180,50,125,25);
         buttonContinueGame.setBounds(180,100,125,25);
         buttonTopPlayer.setBounds(180,150,125,25);
