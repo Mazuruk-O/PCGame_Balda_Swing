@@ -44,7 +44,7 @@ public class MainFrame extends JFrame {
         this.setResizable(false);
     }
 
-    private void addButton() {
+    private void addButton() {//
         JButton buttonContinueGame = new JButton("Продовжити");
         JButton buttonTopPlayer = new JButton("Топ гравців");
         JButton buttonSettingGame = new JButton("Налаштування");
