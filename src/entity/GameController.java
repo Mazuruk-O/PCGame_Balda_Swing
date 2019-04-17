@@ -36,6 +36,10 @@ public class GameController {
         rowsChengeGameField=-1;
         columChengeGameField=-1;
         unblockTextField();
+        gameFieldFrame.getPlayer1Name().setBackground(new Color(97, 72, 36, 231));
+        gameFieldFrame.getPlayer2Name().setBackground(Color.WHITE);
+        gameFieldFrame.getPlayer1Name().setOpaque(true);
+        gameFieldFrame.getPlayer2Name().setOpaque(true);
     }
 
     private void setActionButton() {
@@ -48,6 +52,7 @@ public class GameController {
                         && (stepChar == '\u0000')) && (newWord != null)){
                     gameFieldIntf.setSection(rowsChengeGameField,columChengeGameField,stepChar);
                     setNewScore();
+                    System.out.println("add: " + stepChar);
                 }
 
                 clearValue();
@@ -74,7 +79,10 @@ public class GameController {
         for (int i = 0; i < ConstSIZE.SIZE_FIELD; i++) {
             for (int j = 0; j < ConstSIZE.SIZE_FIELD; j++) {
                 TextField tmp = gameFieldFrame.getTextField(i,j);
-                tmp.setText(Character.toString(gameFieldIntf.getField()[i][j]));
+
+                if(!gameFieldIntf.checkSection(i,j))
+                    tmp.setText(Character.toString(gameFieldIntf.getField()[i][j]));
+
                 tmp.getDocument().addDocumentListener(new DocumentListener() {
                     @Override
                     public void insertUpdate(DocumentEvent e) {
@@ -130,7 +138,6 @@ public class GameController {
     private void unblockTextField(){
         for (int i = 0; i < ConstSIZE.SIZE_FIELD; i++) {
             for (int j = 0; j < ConstSIZE.SIZE_FIELD; j++) {
-
                 if (gameFieldIntf.checkSection(i, j))
                     this.gameFieldFrame.getTextField(i, j).setEnabled(true);
 
@@ -166,15 +173,15 @@ public class GameController {
         {
             player_2.addToScore(newWord.length());
             gameFieldFrame.getPlayer2Score().setText(Integer.toString(player_2.getScore()));
-            gameFieldFrame.getPlayer1Score().setBackground(new Color(97, 72, 36, 231));
-            gameFieldFrame.getPlayer2Score().setBackground(Color.WHITE);
+            gameFieldFrame.getPlayer1Name().setBackground(new Color(97, 72, 36, 231));
+            gameFieldFrame.getPlayer2Name().setBackground(Color.WHITE);
         }
         else
         {
             player_1.addToScore(newWord.length());
             gameFieldFrame.getPlayer1Score().setText(Integer.toString(player_1.getScore()));
-            gameFieldFrame.getPlayer2Score().setBackground(new Color(97, 72, 36, 231));
-            gameFieldFrame.getPlayer1Score().setBackground(Color.WHITE);
+            gameFieldFrame.getPlayer2Name().setBackground(new Color(97, 72, 36, 231));
+            gameFieldFrame.getPlayer1Name().setBackground(Color.WHITE);
         }
 
         return;
