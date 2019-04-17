@@ -1,18 +1,19 @@
-package entity.interf;
+package entity;
 
 import GUI.GameFieldFrame;
-import entity.ConstSIZE;
-import entity.TextField;
+import entity.interf.GameFieldIntf;
+import entity.interf.PlayerIntf;
 
-import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameController {
+    private final Color newBackgroundColor;
     private PlayerIntf player_1;
     private PlayerIntf player_2;
     private GameFieldIntf gameFieldIntf;
@@ -20,8 +21,11 @@ public class GameController {
     private char stepChar;
     private int rowsChengeGameField,columChengeGameField;
     private int count_all_step = 0;
+    private StringBuilder newWord;
+    private boolean isInputWord = false;
 
     public GameController(GameFieldIntf field,PlayerIntf pl1, PlayerIntf pl2, GameFieldFrame gameFieldFrame){
+        newBackgroundColor = new Color(34, 139, 34);
         player_1 = pl1;
         player_2 = pl2;
         gameFieldIntf = field;
@@ -37,19 +41,13 @@ public class GameController {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
 
-                if(!((rowsChengeGameField == -1) && (columChengeGameField == -1) && (stepChar == '\u0000')))
+                if(!((rowsChengeGameField == -1) && (columChengeGameField == -1)
+                        && (stepChar == '\u0000'))){
                     gameFieldIntf.setSection(rowsChengeGameField,columChengeGameField,stepChar);
-
-                stepChar = '\u0000';
-                rowsChengeGameField=-1;
-                columChengeGameField=-1;
-
-                /*if(controllGame()){
-                    player_1.addToScore(wordStep.size());
+                    count_all_step++;
                 }
 
-                wordStep.clear();*/
-
+                clearValue();
                 unblockTextField();
             }
         });
@@ -60,14 +58,11 @@ public class GameController {
                 super.mousePressed(e);
 
                 if(!((rowsChengeGameField == -1) && (columChengeGameField == -1) && (stepChar == '\u0000'))){
-                    unblockTextField();
                     gameFieldFrame.getTextField()[rowsChengeGameField][columChengeGameField].setText("");
+                    unblockTextField();
                 }
 
-                stepChar = '\u0000';
-                rowsChengeGameField=-1;
-                columChengeGameField=-1;
-                //wordStep.clear();
+                clearValue();
 
                 return;
             }
@@ -81,7 +76,9 @@ public class GameController {
                     public void insertUpdate(DocumentEvent e) {
                         //GameFieldFrame.this.gameField.getField()[i][j]
                         GameController.this.blockTextField();
+                        newWord = new StringBuilder();
                         GameController.this.stepChar = tmp.getText().charAt(0);
+                        isInputWord = true;
 
                         rowsChengeGameField = tmp.getI();
                         columChengeGameField = tmp.getJ();
@@ -100,37 +97,55 @@ public class GameController {
                 });
             }
         }
-    }
 
-    /*private boolean controllGame(){
-        int sizeSet = wordStep.size();
-        Pair first = wordStep.get(0), second = wordStep.get(1);
-        for (int i = 2; i < sizeSet; i++) {
-            if(first.equals(second))
-                continue;
-            else if(Math.abs(((Integer) first.left-(Integer)second.left)+((Integer)first.right-(Integer)second.right)) == 1)
-            {
-                first = second;
-                second = wordStep.get(i);
+        for (int i = 0; i < ConstSIZE.SIZE_FIELD; i++) {
+            for (int j = 0; j < ConstSIZE.SIZE_FIELD; j++) {
+                TextField tmp = gameFieldFrame.getTextField(i,j);
+                tmp.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        super.mouseReleased(e);
+                        if(!tmp.getText().equals("") && isInputWord && tmp.getText() != null){
+                            newWord.append(tmp.getText().charAt(0));
+                            tmp.setBackground(newBackgroundColor);
+                        }
+                    }
+                });
             }
-            else
-                return false;
         }
-        return true;
-    }*/
+    }
 
     private void blockTextField(){
         for (int i = 0; i < ConstSIZE.SIZE_FIELD; i++)
             for (int j = 0; j < ConstSIZE.SIZE_FIELD; j++)
                 this.gameFieldFrame.getTextField(i,j).setEnabled(false);
+
+        return;
     }
 
     private void unblockTextField(){
-        for (int i = 0; i < ConstSIZE.SIZE_FIELD; i++)
-            for (int j = 0; j < ConstSIZE.SIZE_FIELD; j++){
-                if(gameFieldIntf.checkSection(i,j))
-                    this.gameFieldFrame.getTextField(i,j).setEnabled(true);
-
+        for (int i = 0; i < ConstSIZE.SIZE_FIELD; i++) {
+            for (int j = 0; j < ConstSIZE.SIZE_FIELD; j++) {
+                if (gameFieldIntf.checkSection(i, j))
+                    this.gameFieldFrame.getTextField(i, j).setEnabled(true);
+                    this.gameFieldFrame.getTextField(i, j).setBackground(Color.WHITE);
             }
+        }
+
+        return;
+    }
+
+    private void clearValue(){
+        stepChar = '\u0000';
+        rowsChengeGameField=-1;
+        columChengeGameField=-1;
+        isInputWord = false;
+        newWord = null;
+
+        return;
+    }
+
+    private void setJLabel(){
+        
     }
 }

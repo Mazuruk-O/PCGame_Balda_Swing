@@ -1,8 +1,5 @@
-import GUI.GameFieldFrame;
-import GUI.MainFrame;
-import entity.GameField;
-import entity.Player;
-import entity.interf.GameController;
+import GUI.*;
+import entity.*;
 
 import javax.swing.*;
 
@@ -11,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             MainFrame mainFrame = new MainFrame();
-            Player player1 = new Player();
+            Player player1 = new Player("SimpleName");
             Player player2 = new Player();
             GameField gameField = new GameField();
             GameFieldFrame gameFieldFrame = new GameFieldFrame();
