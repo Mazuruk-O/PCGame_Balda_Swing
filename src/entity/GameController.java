@@ -25,14 +25,17 @@ public class GameController {
     private boolean isInputWord = false;
 
     public GameController(GameFieldIntf field,PlayerIntf pl1, PlayerIntf pl2, GameFieldFrame gameFieldFrame){
-        newBackgroundColor = new Color(34, 139, 34);
+        newBackgroundColor = new Color(48, 139, 102);
         player_1 = pl1;
         player_2 = pl2;
         gameFieldIntf = field;
         this.gameFieldFrame = gameFieldFrame;
         setActionButton();
+        setJLabel();
+        blockTextField();
         rowsChengeGameField=-1;
         columChengeGameField=-1;
+        unblockTextField();
     }
 
     private void setActionButton() {
@@ -42,9 +45,9 @@ public class GameController {
                 super.mousePressed(e);
 
                 if(!((rowsChengeGameField == -1) && (columChengeGameField == -1)
-                        && (stepChar == '\u0000'))){
+                        && (stepChar == '\u0000')) && (newWord != null)){
                     gameFieldIntf.setSection(rowsChengeGameField,columChengeGameField,stepChar);
-                    count_all_step++;
+                    setNewScore();
                 }
 
                 clearValue();
@@ -71,12 +74,13 @@ public class GameController {
         for (int i = 0; i < ConstSIZE.SIZE_FIELD; i++) {
             for (int j = 0; j < ConstSIZE.SIZE_FIELD; j++) {
                 TextField tmp = gameFieldFrame.getTextField(i,j);
+                tmp.setText(Character.toString(gameFieldIntf.getField()[i][j]));
                 tmp.getDocument().addDocumentListener(new DocumentListener() {
                     @Override
                     public void insertUpdate(DocumentEvent e) {
                         //GameFieldFrame.this.gameField.getField()[i][j]
                         GameController.this.blockTextField();
-                        newWord = new StringBuilder();
+                        newWord = (newWord == null ) ? new StringBuilder() : newWord;
                         GameController.this.stepChar = tmp.getText().charAt(0);
                         isInputWord = true;
 
@@ -126,9 +130,11 @@ public class GameController {
     private void unblockTextField(){
         for (int i = 0; i < ConstSIZE.SIZE_FIELD; i++) {
             for (int j = 0; j < ConstSIZE.SIZE_FIELD; j++) {
+
                 if (gameFieldIntf.checkSection(i, j))
                     this.gameFieldFrame.getTextField(i, j).setEnabled(true);
-                    this.gameFieldFrame.getTextField(i, j).setBackground(Color.WHITE);
+
+                this.gameFieldFrame.getTextField(i, j).setBackground(Color.WHITE);
             }
         }
 
@@ -146,6 +152,31 @@ public class GameController {
     }
 
     private void setJLabel(){
-        
+        gameFieldFrame.getPlayer1Name().setText(player_1.getName());
+        gameFieldFrame.getPlayer2Name().setText(player_2.getName());
+        gameFieldFrame.getPlayer1Score().setText(Integer.toString(player_1.getScore()));
+        gameFieldFrame.getPlayer2Score().setText(Integer.toString(player_2.getScore()));
+        return;
+    }
+
+    private void setNewScore(){
+        ++count_all_step;
+
+        if(count_all_step % 2 == 0)
+        {
+            player_2.addToScore(newWord.length());
+            gameFieldFrame.getPlayer2Score().setText(Integer.toString(player_2.getScore()));
+            gameFieldFrame.getPlayer1Score().setBackground(new Color(97, 72, 36, 231));
+            gameFieldFrame.getPlayer2Score().setBackground(Color.WHITE);
+        }
+        else
+        {
+            player_1.addToScore(newWord.length());
+            gameFieldFrame.getPlayer1Score().setText(Integer.toString(player_1.getScore()));
+            gameFieldFrame.getPlayer2Score().setBackground(new Color(97, 72, 36, 231));
+            gameFieldFrame.getPlayer1Score().setBackground(Color.WHITE);
+        }
+
+        return;
     }
 }

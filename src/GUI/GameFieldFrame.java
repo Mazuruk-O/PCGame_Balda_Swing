@@ -94,5 +94,21 @@ public class GameFieldFrame extends JPanel {
             return new TextField(-1,-1);
         return textField[i][j];
     }
+
+    public JLabel getPlayer1Name() {
+        return player1Name;
+    }
+
+    public JLabel getPlayer2Name() {
+        return player2Name;
+    }
+
+    public JLabel getPlayer1Score() {
+        return player1Score;
+    }
+
+    public JLabel getPlayer2Score() {
+        return player2Score;
+    }
 }
 
