@@ -1,13 +1,9 @@
 package GUI;
 
 import entity.ConstSIZE;
-import entity.interf.*;
 import entity.TextField;
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
 
 public class GameFieldFrame extends JPanel {
     private JLabel player1Name;
@@ -48,13 +44,13 @@ public class GameFieldFrame extends JPanel {
     }
 
     private void addScore(){
-        player1Name = new JLabel();
-        player1Score = new JLabel();
-        player2Score = new JLabel();
-        player2Name = new JLabel();
+        player1Name = new JLabel("",SwingConstants.CENTER);
+        player1Score = new JLabel("",SwingConstants.CENTER);
+        player2Score = new JLabel("",SwingConstants.CENTER);
+        player2Name = new JLabel("",SwingConstants.CENTER);
         this.add(player1Name);
         this.add(player1Score);
-        this.add(new JLabel(":"));
+        this.add(new JLabel(":",SwingConstants.CENTER));
         this.add(player2Score);
         this.add(player2Name);
         return;

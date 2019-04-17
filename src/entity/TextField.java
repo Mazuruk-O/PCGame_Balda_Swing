@@ -8,6 +8,7 @@ public class TextField extends JTextField {
 
     public TextField(int i, int j){
         super();
+        this.setHorizontalAlignment(SwingConstants.CENTER);
         this.i = i;
         this.j = j;
     }
